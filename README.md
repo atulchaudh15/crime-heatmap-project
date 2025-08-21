@@ -21,7 +21,6 @@ A web application that allows users to **report crimes** and **find the safest r
   
 - **Real-World Addresses**
   - Uses **OpenStreetMap Nominatim API** for free geocoding of addresses.
-  - No paid APIs required.
 
 ---
 
