@@ -8,14 +8,30 @@ function SafeRoute() {
   const [end, setEnd] = useState("");
   const [route, setRoute] = useState([]);
 
+  // ⬇️ AUTH CHECK ADD
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center">
+        <h2 className="text-2xl font-bold mb-4">Please Login First</h2>
+        <p className="text-gray-600">Login required to access Safe Route Finder.</p>
+      </div>
+    );
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/safe-route", {
-        start,
-        end,
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/safe-route",
+        { start, end },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // ⬅️ token pass
+          },
+        }
+      );
 
       if (res.data.start && res.data.end) {
         const path = [
@@ -77,15 +93,12 @@ function SafeRoute() {
           >
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-            {/* Route polyline */}
             <Polyline positions={route} color="blue" />
 
-            {/* Start Marker */}
             <Marker position={route[0]}>
               <Popup>Start</Popup>
             </Marker>
 
-            {/* End Marker */}
             <Marker position={route[route.length - 1]}>
               <Popup>End</Popup>
             </Marker>

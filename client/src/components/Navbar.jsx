@@ -1,21 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
-const Navbar = () => {
-  return (
-    <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-      <h1 className="text-2xl font-bold text-blue-600">CrimeMap</h1>
-      <div className="space-x-6">
-        <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium">
-          Home
-        </Link>
-        <Link to="/map" className="text-gray-700 hover:text-blue-600 font-medium">
-          Map
-        </Link>
-      </div>
-    </nav>
-  );
-};
-
-export default Navbar;
-
+import { Link } from "react-router-dom"; import { useAuth } from "../context/AuthContext"; 
+export default function Navbar() { 
+  const { user, logout } = useAuth(); 
+  return ( 
+  <nav className="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md"> {/* Logo */} 
+  <div className="text-2xl font-bold"> <Link to="/" className="hover:text-yellow-400">Crime Heatmap</Link> 
+  </div> {/* Links */} <div className="space-x-6 flex items-center text-lg"> <Link to="/" className="hover:text-yellow-400">Home</Link> 
+  {user ? ( <> <Link to="/report" className="hover:text-yellow-400">Report Crime</Link> <span className="text-yellow-300">Hello, {user.name || user.email}</span> 
+  <button onClick={logout} className="bg-red-500 px-4 py-1 rounded hover:bg-red-600 transition" > Logout </button> </> ) : ( <>
+   <Link to="/login" className="hover:text-yellow-400">Login</Link>
+    <Link to="/signup" className="bg-yellow-400 text-black px-4 py-1 rounded hover:bg-yellow-500 transition" > Signup </Link> </> )} 
+    </div> </nav> ); }
